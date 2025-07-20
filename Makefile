@@ -1,4 +1,4 @@
-.PHONY: run.inference venv.remove dvc.add_files dvc.get_files down run.prod run.dev run.tests run.tests.coverage_report
+.PHONY: run.inference venv.remove dvc.add_files dvc.get_files run.prod run.dev run.tests run.tests.coverage_report
 
 include .env
 export
@@ -56,9 +56,6 @@ dvc.get_files: dvc.init
 
 
 # --- DOCKER ---
-
-down:
-	docker compose down --volumes --remove-orphans
 
 run.prod:
 	TARGET_STAGE=prod docker compose up --build

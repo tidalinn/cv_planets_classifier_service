@@ -37,5 +37,7 @@ deploy_stage:
     - dvc pull .env.dvc
     - dvc import $URL_MODELLING output/best/classificator.onnx -o models/classificator.onnx --rev dev
     - dvc import $URL_MODELLING output/encoder/mlb.pkl -o models/mlb.pkl --rev dev
-    - make run.prod
-    - make down
+    - docker compose up --build -d
+    - sleep 5
+    - curl http://localhost:8080/healthcheck
+    - docker compose down
