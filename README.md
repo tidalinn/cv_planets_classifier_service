@@ -58,6 +58,7 @@ Grafana Dashboard JSON | | | [dashboard](deploy\grafana\provisioning\dashboards\
 Jaeger | | | [http://localhost:16686](http://localhost:16686)
 Node Exporter | | | [http://localhost:9100](http://localhost:9100)
 Prometheus | | | [http://localhost:9090](http://localhost:9090)
+CI/CD Pipeline | [pipeline]()
 
 ### CICD
 
