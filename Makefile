@@ -51,8 +51,8 @@ dvc.add_files: dvc.init
 	$(VENV_DVC) push
 
 dvc.get_files: dvc.init
-	$(VENV_DVC) import $(URL_MODELLING) output/best/classificator.onnx -o models/classificator.onnx --rev dev
-	$(VENV_DVC) import $(URL_MODELLING) output/encoder/mlb.pkl -o models/mlb.pkl --rev dev
+	$(VENV_DVC) import $(URL_MODELLING) output/best/classificator.onnx -o models/classificator.onnx --rev dev --force
+	$(VENV_DVC) import $(URL_MODELLING) output/encoder/mlb.pkl -o models/mlb.pkl --rev dev --force
 
 
 # --- DOCKER ---
