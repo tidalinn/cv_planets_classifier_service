@@ -1,0 +1,38 @@
+classificator:
+  path_model: models/classificator.onnx
+  threshold: 0.5
+  classes:
+    primary: 0
+    clear: 1
+    agriculture: 2
+    road: 3
+    water: 4
+    partly_cloudy: 5
+    cultivation: 6
+    habitation: 7
+    haze: 8
+    cloudy: 9
+    bare_ground: 10
+    selective_logging: 11
+    artisinal_mine: 12
+    blooming: 13
+    slash_burn: 14
+    blow_down: 15
+    conventional_mine: 16
+
+data:
+  img_size:
+    - 224
+    - 224
+  mean:
+    - 0.485
+    - 0.456
+    - 0.406
+  std:
+    - 0.229
+    - 0.224
+    - 0.225
+
+onnx:
+  providers:
+    - CPUExecutionProvider

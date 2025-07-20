@@ -1,0 +1,25 @@
+# cache
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache
+.mypy_cache
+
+# files
+.idea
+.env
+*.pt
+*.pth
+*.egg-info
+*.log
+*.onnx
+*.jpg
+*.csv
+*.zip
+*.log
+*.ckpt
+*.pkl
+
+# directories
+.venv/
+.vscode/

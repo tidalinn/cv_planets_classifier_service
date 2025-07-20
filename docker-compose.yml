@@ -1,0 +1,102 @@
+services:
+  inference:
+    container_name: ${INFERENCE_NAME}
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: ${TARGET_STAGE}
+      args:
+        STAGING_HOST: ${STAGING_HOST}
+        SSH_PRIVATE_KEY: ${SSH_PRIVATE_KEY}
+    image: ${INFERENCE_IMAGE}
+    command: sh -c "make run.inference"
+    env_file:
+      - .env
+    volumes:
+      - ./logs:/app/logs
+    ports:
+      - "8080:80"
+    networks:
+      - monitor-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+    environment:
+      - STAGING_HOST=${STAGING_HOST}
+      - JAEGER_NAME=${JAEGER_NAME}
+      - JAEGER_PORT=${JAEGER_PORT}
+
+  prometheus:
+    container_name: ${PROMETHEUS_NAME}
+    image: prom/prometheus:v2.17.1
+    volumes:
+      - ./deploy/prometheus:/etc/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+    expose:
+      - 9090
+    ports:
+      - 9090:9090
+    networks:
+      - monitor-net
+
+  nodeexporter:
+    container_name: ${NODE_EXPORTER_NAME}
+    image: prom/node-exporter:v0.18.1
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
+    restart: unless-stopped
+    expose:
+      - 9100
+    ports:
+      - 9100:9100
+    networks:
+      - monitor-net
+
+  grafana:
+    container_name: ${GRAFANA_NAME}
+    image: grafana/grafana:6.7.2
+    volumes:
+      - ./deploy/grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    restart: unless-stopped
+    expose:
+      - 3000
+    ports:
+      - 3000:3000
+    networks:
+      - monitor-net
+
+  jaeger:
+    container_name: ${JAEGER_NAME}
+    image: jaegertracing/jaeger:latest
+    ports:
+      - "16686:16686"
+      - "${JAEGER_PORT}:${JAEGER_PORT}"
+      - "4318:4318"
+    environment:
+      - LOG_LEVEL=debug
+    networks:
+      - monitor-net
+
+networks:
+  monitor-net:
