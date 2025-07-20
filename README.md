@@ -21,6 +21,10 @@
 
 ### DEV
 
+Загрузка файлов энкодера классов и модели из dvc:
+```
+make dvc.add.files
+```
 Запуск обучения:
 ```
 make run.dev
@@ -32,6 +36,10 @@ make run.dev
 4. Запуск базового контейнера
 5. Контейнер копирует модель и выполняет команду `make run.inference` (`docker-compose.yml` -> `command`) и запускает FastAPI
 
+Загрузка файла `.env` в dvc:
+```
+make dvc.add.files
+```
 Запуск тестов:
 ```
 make run.tests
@@ -58,7 +66,7 @@ Grafana Dashboard JSON | | | [dashboard](deploy\grafana\provisioning\dashboards\
 Jaeger | | | [http://localhost:16686](http://localhost:16686)
 Node Exporter | | | [http://localhost:9100](http://localhost:9100)
 Prometheus | | | [http://localhost:9090](http://localhost:9090)
-CI/CD Pipeline | [pipeline]()
+CI/CD Pipeline | [pipeline](https://gitlab.deepschool.ru/dl-deploy2/p.kukhtenkova/final-project-service/-/pipelines)
 
 ### CICD
 

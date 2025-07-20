@@ -8,6 +8,8 @@ stages:
   - deploy
 
 variables:
+  DVC_CACHE_DIR: /home/p.kukhtenkova/fp_service
+  URL_MODELLING: ssh://git@gitlab.deepschool.ru:30022/dl-deploy2/p.kukhtenkova/final-project-modelling.git
   DOCKER_HOST: tcp://docker:2375
   DOCKER_TLS_CERTDIR: ""
 
@@ -17,6 +19,7 @@ before_script:
   - curl -SL https://github.com/docker/compose/releases/download/v2.24.6/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
   - chmod +x ~/.docker/cli-plugins/docker-compose
   - docker compose version
+  - pip install -r requirements/requirements-dvc.txt
   - mkdir -p ~/.ssh
   - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
   - chmod 600 ~/.ssh/id_rsa
@@ -29,4 +32,9 @@ deploy_stage:
       when: always
     - when: never
   script:
+    - dvc remote add -d origin ssh://$STAGING_USERNAME@$STAGING_HOST$DVC_CACHE_DIR
+    - dvc remote modify origin ask_password true
+    - dvc pull .env.dvc
+    - dvc import $URL_MODELLING output/best/classificator.onnx -o models/classificator.onnx --rev dev
+    - dvc import $URL_MODELLING output/encoder/mlb.pkl -o models/mlb.pkl --rev dev
     - make run.prod

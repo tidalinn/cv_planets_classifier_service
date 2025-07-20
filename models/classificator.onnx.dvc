@@ -1,0 +1,15 @@
+md5: 8d1e76c162bca16acfcda2febee4d17c
+frozen: true
+deps:
+- path: output/best/classificator.onnx
+  repo:
+    url:
+      ssh://git@gitlab.deepschool.ru:30022/dl-deploy2/p.kukhtenkova/final-project-modelling.git
+    rev: dev
+    rev_lock: 6c603a79710d8a4098ac78babdd188838963d6f8
+outs:
+- md5: 683dcae3171e3033e191ed0f415743d8
+  size: 98190681
+  isexec: true
+  hash: md5
+  path: classificator.onnx

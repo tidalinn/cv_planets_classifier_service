@@ -1,0 +1,15 @@
+md5: f48aaddceadc4e3afabb25a12d0c2fe4
+frozen: true
+deps:
+- path: output/encoder/mlb.pkl
+  repo:
+    url:
+      ssh://git@gitlab.deepschool.ru:30022/dl-deploy2/p.kukhtenkova/final-project-modelling.git
+    rev: dev
+    rev_lock: 6c603a79710d8a4098ac78babdd188838963d6f8
+outs:
+- md5: 7429e179ad13b59b13eb668662956ce4
+  size: 730
+  isexec: true
+  hash: md5
+  path: mlb.pkl
