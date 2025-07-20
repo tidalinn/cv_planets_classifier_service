@@ -37,6 +37,6 @@ deploy_stage:
     - dvc pull .env.dvc
     - dvc import $URL_MODELLING output/best/classificator.onnx -o models/classificator.onnx --rev dev
     - dvc import $URL_MODELLING output/encoder/mlb.pkl -o models/mlb.pkl --rev dev
-    - docker compose up --build -d
+    - TARGET_STAGE=prod docker compose up --build -d
     - sleep 5
-    - docker compose down
+    - TARGET_STAGE=prod docker compose down
