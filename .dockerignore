@@ -11,6 +11,8 @@ deploy/
 .gitignore
 .gitlab-ci.yml
 
+.env*
+
 docker-compose.yml
 Dockerfile
 

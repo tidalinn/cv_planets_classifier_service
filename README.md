@@ -4,7 +4,7 @@
 
 Свойство | Значение
 -|-
-Задача сервиса | Классификация спутниковых снимков
+Задача сервиса | Multilabel-классификация спутниковых снимков
 Инструменты | Python, FastAPI, DVC, CI/CD, Linters
 
 <br>
@@ -21,24 +21,13 @@
 
 ### DEV
 
-Загрузка файлов энкодера классов и модели из dvc:
+Загрузка модели из dvc:
 ```
-make dvc.add.files
+make -f Makefile.dvc dvc.get_files
 ```
-Запуск обучения:
+Запуск сервиса:
 ```
 make run.dev
-```
-Последовательность выполнения:
-1. Сборка образа
-2. Запуск контейнера скачивания модели
-3. Контейнер выполняет команду `make dvc.get.files` и скачивает модель из dvc
-4. Запуск базового контейнера
-5. Контейнер копирует модель и выполняет команду `make run.inference` (`docker-compose.yml` -> `command`) и запускает FastAPI
-
-Загрузка файла `.env` в dvc:
-```
-make dvc.add.files
 ```
 Запуск тестов:
 ```
@@ -51,7 +40,7 @@ make run.tests.coverage_report
 
 ### PROD
 
-Запуск обучения:
+Запуск сервиса:
 ```
 make run.dev
 ```
@@ -66,39 +55,3 @@ Grafana Dashboard JSON | | | [dashboard](deploy\grafana\provisioning\dashboards\
 Jaeger | | | [http://localhost:16686](http://localhost:16686)
 Node Exporter | | | [http://localhost:9100](http://localhost:9100)
 Prometheus | | | [http://localhost:9090](http://localhost:9090)
-CI/CD Pipeline | [pipeline](https://gitlab.deepschool.ru/dl-deploy2/p.kukhtenkova/final-project-service/-/pipelines)
-
-### CICD
-
-Пайплайн CI/CD отрабатывает при коммите в ветку `dev`.
-
-## Структура проекта
-
-```
-├── configs/                                   # конфигурационные файл
-│    └── project.yaml                          # весь проект
-├── deploy/                                    # Grafana и Prometheus
-├── logs/                                      # логи
-├── models/                                    # модели в ONNX
-├── requirements/                              # зависимости
-├── src/                                       # исходный код
-│    ├── configs/                              # модуль конфигураций
-│    │    └── project_config.py                # конфигурация
-│    ├── containers/                           # модуль DI-контейнеров
-│    │    ├── classificator.py                 # классификатор изображений
-│    │    └── containers.py                    # DI-контейнеры
-│    ├── routes/                               # модуль маршрутизации
-│    │    ├── classificator.py                 # классификатор изображений
-│    │    └── metrics.py                       # мониторинг метрик
-│    ├── utils/                                # модуль полезных функций
-│    │    ├── logger.py                        # кастомный логгер
-│    │    ├── metrics.py                       # настройка Prometheus
-│    │    └── tracing.py                       # настройка Jaeger
-│    ├── constants.py                          # константы
-│    ├── main_pipeine.py                       # запуск пайплайна ClearML
-│    └── main.py                               # запуск обучения
-├── tests/                                     # тесты
-├── .gitlab-ci.yml                             # настройка CICD
-├── Makefile                                   # управляющие команды
-└── ...
-```
