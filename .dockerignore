@@ -1,4 +1,3 @@
-__pycache__/
 **/__pycache__/
 *.pyc
 *.pyo
@@ -21,3 +20,6 @@ Dockerfile
 
 .pre-commit-config.yaml
 setup.cfg
+
+.venv/
+.vscode/
