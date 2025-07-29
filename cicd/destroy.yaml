@@ -1,0 +1,11 @@
+
+- hosts: deepschool_host
+  tasks:
+    - name: stop containers
+      command: "{{ playbook_dest }}/cicd/templates/destroy.sh"
+      ignore_errors: true
+      tags: [ 'destroy' ]
+    - name: remove containers
+      command: "{{ playbook_dest }}/cicd/templates/clean.sh"
+      ignore_errors: true
+      tags: [ 'clean' ]

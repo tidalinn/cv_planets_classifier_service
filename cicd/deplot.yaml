@@ -1,0 +1,37 @@
+- hosts: deepschool_host
+  tasks:
+    - name: create workdir
+      file:
+        path: '{{ playbook_dest }}'
+        state: directory
+        owner: '{{ ansible_user }}'
+      tags: [ 'prepare' ]
+
+    - name: copy project files
+      synchronize:
+        src: ./
+        dest: '{{ playbook_dest }}'
+        recursive: yes
+        delete: yes
+      delegate_to: localhost
+      tags: [ 'prepare' ]
+
+    - name: make .sh files executable
+      file:
+        path: "{{ item }}"
+        mode: '0755'
+      loop:
+        - "{{ playbook_dest }}/cicd/templates/run.sh"
+        - "{{ playbook_dest }}/cicd/templates/destroy.sh"
+        - "{{ playbook_dest }}/cicd/templates/clean.sh"
+      tags: ['prepare']
+
+    - name: install DVC
+      pip:
+        name: dvc[ssh]>=3.30.1
+        extra_args: --user
+      tags: [ 'prepare' ]
+
+    - name: Run deployment script
+      command: "{{ playbook_dest }}/cicd/templates/run.sh"
+      tags: [ 'deploy' ]

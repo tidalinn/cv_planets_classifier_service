@@ -8,35 +8,33 @@ stages:
   - deploy
 
 variables:
-  DVC_CACHE_DIR: /home/p.kukhtenkova/fp_service
-  URL_MODELLING: ssh://git@gitlab.deepschool.ru:30022/dl-deploy2/p.kukhtenkova/final-project-modelling.git
   DOCKER_HOST: tcp://docker:2375
   DOCKER_TLS_CERTDIR: ""
+  PLAYBOOK_DEST: /home/"$STAGING_USERNAME"/playbooks/fp-service
 
 before_script:
-  - apt-get update && apt-get install -y curl git openssh-client make docker.io
-  - mkdir -p ~/.docker/cli-plugins
-  - curl -SL https://github.com/docker/compose/releases/download/v2.24.6/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
-  - chmod +x ~/.docker/cli-plugins/docker-compose
-  - docker compose version
-  - pip install -r requirements/requirements-dvc.txt
+  - apt-get update && apt-get install -y openssh-client
   - mkdir -p ~/.ssh
   - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
   - chmod 600 ~/.ssh/id_rsa
-  - ssh-keyscan $STAGING_HOST >> ~/.ssh/known_hosts
+  - ssh-keyscan "$STAGING_HOST" >> ~/.ssh/known_hosts
+  - ssh -i ~/.ssh/id_rsa "$STAGING_USERNAME"@"$STAGING_HOST" 'echo SSH OK'
+  - python3 -m pip install -r requirements/requirements-cicd.txt
 
 deploy_stage:
   stage: deploy
   rules:
-    - if: '$CI_COMMIT_BRANCH == "dev"'
+    - if: '$CI_COMMIT_BRANCH == "test"'
       when: always
     - when: never
   script:
-    - dvc remote add -d origin ssh://$STAGING_USERNAME@$STAGING_HOST$DVC_CACHE_DIR
-    - dvc remote modify origin ask_password true
-    - dvc pull .env.dvc
-    - dvc import $URL_MODELLING output/best/classificator.onnx -o models/classificator.onnx --rev dev
-    - dvc import $URL_MODELLING output/encoder/mlb.pkl -o models/mlb.pkl --rev dev
-    - TARGET_STAGE=prod docker compose up --build -d
-    - sleep 5
-    - TARGET_STAGE=prod docker compose down
+    - ansible-playbook -i cicd/inventory.ini cicd/deploy.yaml
+
+destroy_stage:
+  stage: deploy
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "test"'
+      when: always
+    - when: never
+  script:
+    - ansible-playbook -i cicd/inventory.ini cicd/destroy.yaml
