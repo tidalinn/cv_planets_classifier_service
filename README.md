@@ -5,7 +5,7 @@
 Свойство | Значение
 -|-
 Задача сервиса | Multilabel-классификация спутниковых снимков
-Инструменты | Python, FastAPI, DVC, CI/CD, Linters
+Инструменты | Python, Docker, FastAPI, DVC, CI/CD, Linters
 
 <br>
 
