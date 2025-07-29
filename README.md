@@ -1,6 +1,6 @@
-# final_project [service]
+# CV planets classifier [service]
 
-> [Финальный проект (GitLab)](https://gitlab.deepschool.ru/dl-deploy2/lectures/-/tree/main/big-hw)
+> [CV planets classifier [modelling]](https://github.com/tidalinn/cv_planets_classifier_modelling)
 
 Свойство | Значение
 -|-
