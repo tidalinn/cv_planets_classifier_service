@@ -23,7 +23,7 @@
 
 Загрузка модели из dvc:
 ```
-make -f Makefile.dvc dvc.get_files
+make -f Makefile_dvc dvc.get_files
 ```
 Запуск сервиса:
 ```

@@ -25,16 +25,11 @@ repos:
     hooks:
       - id: isort
 
-  - repo: 'https://github.com/kynan/nbstripout'
-    rev: 0.6.1
-    hooks:
-      - id: nbstripout
-
   - repo: local
     hooks:
     - id: flake8
       name: flake8
-      description: wemake-python-styleguide enforcement
+      description: wemake-python-styleguide==0.17.0 enforcement
       entry: flake8
       args: ["--config=setup.cfg"]
       language: python
