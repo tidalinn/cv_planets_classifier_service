@@ -1,4 +1,5 @@
 import time
+from typing import Any
 
 from fastapi import Request, Response
 from prometheus_client import (
@@ -21,7 +22,7 @@ request_latency = Histogram(
 )
 
 
-async def metrics_middleware(request: Request, call_next):
+async def metrics_middleware(request: Request, call_next) -> Any:
     start_time = time.time()
     response = await call_next(request)
     process_time = time.time() - start_time
@@ -33,6 +34,6 @@ async def metrics_middleware(request: Request, call_next):
     return response
 
 
-def metrics_handler():
+def metrics_handler() -> Response:
     metrics = generate_latest()
     return Response(content=metrics, media_type=CONTENT_TYPE_LATEST)

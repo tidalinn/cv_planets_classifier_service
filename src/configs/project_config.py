@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Dict, List, Tuple, Union
+from typing import Union
 
 from omegaconf import OmegaConf
 from pydantic import BaseModel, ConfigDict
@@ -15,17 +15,17 @@ class BaseValidatedConfig(BaseModel):
 class ClassificatorConfig(BaseValidatedConfig):
     path_model: str
     threshold: float
-    classes: Dict[str, int]
+    classes: dict[str, int]
 
 
 class DataConfig(BaseValidatedConfig):
-    img_size: Tuple[int, int]
-    mean: List[float]
-    std: List[float]
+    img_size: tuple[int, int]
+    mean: list[float]
+    std: list[float]
 
 
 class ONNXConfig(BaseValidatedConfig):
-    providers: List[str]
+    providers: list[str]
 
 
 class ProjectConfig(BaseValidatedConfig):

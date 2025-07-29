@@ -1,6 +1,6 @@
 .PHONY: *
 
-INFERENCE_IMAGE := fp-service-polina-kukhtenkova
+INFERENCE_NAME := fp-service-polina-kukhtenkova-container
 
 
 # --- SERVICE ---

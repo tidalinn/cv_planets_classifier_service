@@ -1,16 +1,12 @@
-import logging
-
 from fastapi import FastAPI
 
 from src.configs import ProjectConfig
 from src.constants import PATH_CONFIGS
 from src.containers import AppContainer
 from src.routes import classificator, metrics
-from src.utils.logger import init_logger
+from src.utils.logger import LOGGER
 from src.utils.metrics import metrics_middleware
 from src.utils.tracing import setup_tracer
-
-logger = logging.getLogger(__name__)
 
 
 def set_routers(app: FastAPI):
@@ -19,8 +15,6 @@ def set_routers(app: FastAPI):
 
 
 def create_app() -> FastAPI:
-    init_logger()
-
     config = ProjectConfig.from_yaml(PATH_CONFIGS / 'project.yml')
 
     container = AppContainer()
@@ -32,6 +26,6 @@ def create_app() -> FastAPI:
     set_routers(app)
     setup_tracer(app)
 
-    logger.info('Created app')
+    LOGGER.info('Created app')
 
     return app

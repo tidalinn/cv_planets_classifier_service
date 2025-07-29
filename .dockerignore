@@ -23,3 +23,4 @@ setup.cfg
 
 .venv/
 .vscode/
+htmlcov/

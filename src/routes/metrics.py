@@ -5,7 +5,7 @@ router = APIRouter(tags=['monitoring'])
 
 
 @router.get('/metrics')
-async def metrics():
+async def metrics() -> Response:
     return Response(
         content=generate_latest(),
         media_type=CONTENT_TYPE_LATEST

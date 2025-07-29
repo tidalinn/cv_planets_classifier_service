@@ -11,7 +11,7 @@ class AppContainer(containers.DeclarativeContainer):
         cfg=config,
     )
 
-    classificator = providers.Factory(
+    classificator = providers.Singleton(
         Classificator,
         config=config_project
     )
