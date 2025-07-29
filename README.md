@@ -51,7 +51,7 @@ make run.dev
 -|-|-|-
 Swagger | | | [http://localhost:8080/docs](http://localhost:8080/docs)
 Grafana | admin | admin | [http://localhost:3000](http://localhost:3000)
-Grafana Dashboard JSON | | | [dashboard](deploy\grafana\provisioning\dashboards\docker_host.json)
+Grafana Dashboard JSON | | | [dashboard](deploy/grafana/provisioning/dashboards/docker_host.json)
 Jaeger | | | [http://localhost:16686](http://localhost:16686)
 Node Exporter | | | [http://localhost:9100](http://localhost:9100)
 Prometheus | | | [http://localhost:9090](http://localhost:9090)
